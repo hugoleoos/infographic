@@ -105,7 +105,6 @@ function compareDiet(dinosaur, human) {
 * @returns {string} a random fact or comparison 
 */
 function randomizeFacts(tile, human) {
-    console.log(tile, human)
     if (tile.species === 'Pigeon') return tile.fact;
     if (tile.species === 'human') return;
 
