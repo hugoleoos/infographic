@@ -93,7 +93,7 @@ function compareHeight(dinosaur, human) {
 * @returns {string} comparison of diet
 */
 function compareDiet(dinosaur, human) {
-    const isSameDiet = dinosaur.diet === human.diet;
+    const isSameDiet = dinosaur.diet.toLowerCase === human.diet.toLowerCase;
     return isSameDiet ? `wow \o/. You are both ${dinosaur.diet}.` : `You are ${human.diet} but the ${dinosaur.species} is ${dinosaur.diet}.`;
 }
 
