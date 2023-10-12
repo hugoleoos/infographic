@@ -8,7 +8,6 @@ let ALL_DINOSAURS;
     await fetch('dino.json').then(res => res.json()).then(data => ALL_DINOSAURS = data)
 })()
 
-
 /**
 * @description Represents a Dinosaur
 * @constructor
@@ -25,8 +24,7 @@ function Dinosaur(dinoObject) {
     this.when = when;
 }
 
-fuction Human(name, feet, inches, weight, diet)
-{
+function Human(name, feet, inches, weight, diet) {
     this.name = name;
     this.feet = feet;
     this.inches = inches;
@@ -35,13 +33,44 @@ fuction Human(name, feet, inches, weight, diet)
 }
 
 Human.prototype.getHeightInInches = function (feet, inches) {
-  //coercing string values to numbers with (+)inches
-  return +feet * 12 + +inches;
+    return (+this.feet * 12 + +this.inches).toFixed(1);
 };
 
+/**
+* @description Compare weight between dinosaur and human, and add to prototype of human
+* @param {object} dinosaur
+* @param {object} human 
+* @returns {string} comparison of how many times the dinosaur is heavier or thinner than the human
+*/
 Human.prototype.compareWeight = function (dinosaur) {
-    const weightRatio = (dinosaur.weight / human.weight).toFixed(1);
+    const weightRatio = (dinosaur.weight / this.weight).toFixed(1);
     return `The ${dinosaur.species} was ${weightRatio} ${weightRatio > 1 ? "havier" : "thinner"} than you.`
+}
+
+/**
+* @description Compare height between dinosaur and human
+* @param {object} dinosaur
+* @param {object} human 
+* @returns {string} comparison of how many times the dinosaur is taller or shorter than the human
+*/
+Human.prototype.compareHeight = function (dinosaur) {
+    const heightRatio = (dinosaur.height / this.getHeightInInches()).toFixed(1);
+    if (heightRatio === 1) {
+        return `wow \o/. You are as tall as ${dinosaur.species}.`;
+    }
+
+    return `The ${dinosaur.species} was ${heightRatio} ${heightRatio > 1 ? "taller" : "shorter"} than you.`;
+}
+
+/**
+* @description Compare diet between dinosaur and human
+* @param {object} dinosaur
+* @param {object} human 
+* @returns {string} comparison of diet
+*/
+Human.prototype.compareDiet = function (dinosaur) {
+    const isSameDiet = dinosaur.diet.toLowerCase === this.diet.toLowerCase;
+    return isSameDiet ? `wow \o/. You are both ${dinosaur.diet}.` : `You are ${this.diet} but the ${dinosaur.species} is ${dinosaur.diet}.`;
 }
 
 /**
@@ -67,46 +96,8 @@ function getHumanData() {
     const [name, feet, inches, weight] = document.querySelectorAll("input");
     const diet = document.querySelector("select");
 
-    return new Human ( name.value,  Number(feet.value), Number(inches.value), Number(weight.value), diet.value)
+    return new Human(name.value, Number(feet.value), Number(inches.value), Number(weight.value), diet.value)
 }
-
-/**
-* @description Compare weight between dinosaur and human
-* @param {object} dinosaur
-* @param {object} human 
-* @returns {string} comparison of how many times the dinosaur is heavier or thinner than the human
-*/
-//function compareWeight(dinosaur, human) {
-//    const weightRatio = (dinosaur.weight / human.weight).toFixed(1);
-//    return `The ${dinosaur.species} was ${weightRatio} ${weightRatio > 1 ? "havier" : "thinner"} than you.`
-//}
-
-/**
-* @description Compare height between dinosaur and human
-* @param {object} dinosaur
-* @param {object} human 
-* @returns {string} comparison of how many times the dinosaur is taller or shorter than the human
-*/
-function compareHeight(dinosaur, human) {
-    const heightRatio = (dinosaur.height / human.getHeightInInches()).toFixed(1);
-    if (heightRatio === 1) {
-        return `wow \o/. You are as tall as ${dinosaur.species}.`;
-    }
-
-    return `The ${dinosaur.species} was ${heightRatio} ${heightRatio > 1 ? "taller" : "shorter"} than you.`;
-}
-
-/**
-* @description Compare diet between dinosaur and human
-* @param {object} dinosaur
-* @param {object} human 
-* @returns {string} comparison of diet
-*/
-function compareDiet(dinosaur, human) {
-    const isSameDiet = dinosaur.diet.toLowerCase === human.diet.toLowerCase;
-    return isSameDiet ? `wow \o/. You are both ${dinosaur.diet}.` : `You are ${human.diet} but the ${dinosaur.species} is ${dinosaur.diet}.`;
-}
-
 
 /**
 * @description randomize facts to show in the form
@@ -122,8 +113,8 @@ function randomizeFacts(tile, human) {
 
     const data = {
         0: human.compareWeight(tile),
-        1: compareHeight(tile, human),
-        2: compareDiet(tile, human),
+        1: human.compareHeight(tile),
+        2: human.compareDiet(tile),
         3: tile.fact,
         4: `The ${tile.species} lived in ${tile.where}.`,
     }
@@ -187,7 +178,6 @@ function refreshBtn() {
         form.style.display = "block";
     });
 }
-
 
 /**
 * @description On button click, prepare and compare data, and display infographic 
